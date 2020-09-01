@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "999512235700",
+    "firebase_url": "https://comics-95ede.firebaseio.com",
+    "project_id": "comics-95ede",
+    "storage_bucket": "comics-95ede.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999512235700:android:14f5f12e8c4fb12f0ac1e1",
+        "android_client_info": {
+          "package_name": "com.example.comicsprime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999512235700-4domkf5cs7v1dn2st9q4kcegq40uqgdn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.comicsprime",
+            "certificate_hash": "b31db8b525c1e72cc370354cf596051e5920c5a5"
+          }
+        },
+        {
+          "client_id": "999512235700-br25v2cepj0f5tmq5ufma43begj00fam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxXSYhGZGDmfsYoKIO8WnMosQz8Io7J-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999512235700-br25v2cepj0f5tmq5ufma43begj00fam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
