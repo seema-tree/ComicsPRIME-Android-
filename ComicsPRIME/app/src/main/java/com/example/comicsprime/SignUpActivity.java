@@ -1,6 +1,8 @@
 package com.example.comicsprime;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,13 @@ public class SignUpActivity extends Fragment {
 
         btnsignup = (Button) view.findViewById(R.id.signup);
 
+        //TO ENABLE BUTTON AFTER TEXT IS WRITTEN
+
+        editemail.addTextChangedListener(loginTextWatch);
+        editusername.addTextChangedListener(loginTextWatch);
+        editpassword.addTextChangedListener(loginTextWatch);
+        editphone.addTextChangedListener(loginTextWatch);
+
 
         //FIREBASE
 
@@ -58,47 +67,13 @@ public class SignUpActivity extends Fragment {
         btnsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final User user = new User(editemail.getText().toString(),
                         editusername.getText().toString(),
                         editpassword.getText().toString(),
                         editphone.getText().toString());
 
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
-//BUTTON NHI CHAL RHA
+
 
                 users.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -125,4 +100,34 @@ public class SignUpActivity extends Fragment {
 
         return view;
     }
+
+    //TO ENABLE BUTTON AFTER TEXT IS WRITTEN
+
+    private TextWatcher loginTextWatch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            String emailInput = editemail.getText().toString().trim();
+            String usernameInput = editusername.getText().toString().trim();
+            String passwordInput = editpassword.getText().toString().trim();
+            String phoneInput = editphone.getText().toString().trim();
+
+            btnsignup.setEnabled(!emailInput.isEmpty()
+                    && !usernameInput.isEmpty()
+                    && !passwordInput.isEmpty()
+                    && !phoneInput.isEmpty());
+
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }
