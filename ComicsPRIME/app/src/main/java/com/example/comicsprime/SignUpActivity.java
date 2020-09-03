@@ -70,10 +70,10 @@ public class SignUpActivity extends Fragment {
             @Override
             public void onClick(View v) {
 
-                final User user = new User(editemail.getText().toString(),
-                        editusername.getText().toString(),
-                        editpassword.getText().toString(),
-                        editphone.getText().toString());
+                final User user = new User(editemail.getText().toString().trim(),
+                        editusername.getText().toString().trim(),
+                        editpassword.getText().toString().trim(),
+                        editphone.getText().toString().trim());
 
 
 

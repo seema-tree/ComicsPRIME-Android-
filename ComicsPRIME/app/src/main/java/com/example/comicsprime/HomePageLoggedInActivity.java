@@ -34,5 +34,4 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
     }
 
-
 }
