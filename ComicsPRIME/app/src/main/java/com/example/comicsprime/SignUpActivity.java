@@ -34,6 +34,7 @@ public class SignUpActivity extends Fragment {
 
     FirebaseDatabase database;
     DatabaseReference users;
+    DatabaseReference comics;
 
 
     @Nullable
@@ -63,6 +64,7 @@ public class SignUpActivity extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+        comics = database.getReference("Comics");
 
         btnsignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +84,19 @@ public class SignUpActivity extends Fragment {
                             Toast.makeText(getActivity(), "Already Registered", Toast.LENGTH_LONG).show();
                         } else{
                             users.child(user.getUsername()).setValue(user);
+
+                            comics.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    comics.child(user.getUsername()).setValue(0);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    //NULL
+                                }
+                            });
+
                             Toast.makeText(getActivity(), "Registered Successfully !", Toast.LENGTH_LONG).show();
 
                         }
