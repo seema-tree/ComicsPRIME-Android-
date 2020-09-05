@@ -107,6 +107,11 @@ public class LoginActivity extends Fragment {
 
     private void openLoggedInActivity(){
         Intent s = new Intent(getActivity(), HomePageLoggedInActivity.class);
+
+        //PASS DATA
+        String username = editusername.getText().toString().trim();
+        s.putExtra("username", username);
+
         startActivity(s);
     }
 

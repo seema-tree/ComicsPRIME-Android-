@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.comicsprime.Model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,6 +68,7 @@ public class SignUpActivity extends Fragment {
         users = database.getReference("Users");
         comics = database.getReference("Comics");
 
+
         btnsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,14 +84,14 @@ public class SignUpActivity extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.child(user.getUsername()).exists()) {
-                            Toast.makeText(getActivity(), "Already Registered", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Username Already Exists", Toast.LENGTH_LONG).show();
                         } else{
                             users.child(user.getUsername()).setValue(user);
 
                             comics.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    comics.child(user.getUsername()).setValue(0);
+                                    comics.child(user.getUsername()).child("-1").setValue(0);
                                 }
 
                                 @Override

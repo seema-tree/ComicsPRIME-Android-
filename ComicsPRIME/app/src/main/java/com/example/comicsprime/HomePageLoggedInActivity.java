@@ -19,6 +19,10 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeloggedin_page);
 
+        //GET DATA
+        Bundle bundle = getIntent().getExtras();
+        final String username_1 = bundle.getString("username");
+
         //EDITS
 
         addComicButton = (FloatingActionButton) findViewById(R.id.addComic);
@@ -27,6 +31,9 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent s = new Intent(getApplicationContext(), AddComicsActivity.class);
+
+                //PASS DATA
+                s.putExtra("username_1", username_1);
 
                 startActivity(s);
             }
