@@ -17,8 +17,11 @@ import com.example.comicsprime.Model.Comic;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddComicsActivity extends AppCompatActivity {
 
@@ -87,9 +90,14 @@ public class AddComicsActivity extends AppCompatActivity {
                 final Comic newComic = new Comic(editTitle.getText().toString().trim(),
                                                  editVolume.getText().toString().trim(),
                                                  editIssue.getText().toString().trim());
-                String comic_name = editTitle.getText().toString().trim() + " Volume " + editVolume.getText().toString().trim() + " Issue " + editIssue.getText().toString().trim();
 
-                comics.child(comic_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                final String title_name = editTitle.getText().toString().trim();
+                final String volume_name = editVolume.getText().toString().trim();
+                final String issue_name = editIssue.getText().toString().trim();
+
+                //ADD
+
+                comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();

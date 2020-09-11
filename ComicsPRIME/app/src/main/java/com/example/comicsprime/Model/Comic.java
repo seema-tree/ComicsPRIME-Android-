@@ -7,11 +7,21 @@ public class Comic {
     private String title;
     private String volume;
     private String issue;
+    private String comicName;
 
     public Comic(String title, String volume, String issue){
         this.title = title;
         this.volume = volume;
         this.issue = issue;
+        this.comicName = title + " Volume " + volume + " Issue " + issue;
+    }
+
+    public String getComicName() {
+        return comicName;
+    }
+
+    public void setComicName(String comicName) {
+        this.comicName = comicName;
     }
 
     public String getTitle() {
