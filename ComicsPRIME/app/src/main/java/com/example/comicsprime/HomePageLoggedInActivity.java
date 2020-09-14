@@ -16,12 +16,17 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
     FloatingActionButton addComicButton;
     androidx.appcompat.widget.Toolbar toolbar;
 
+
+
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeloggedin_page);
 
+        //TOOLBAR
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("My Comics"); //SETTING OTHER TITLE
+        setSupportActionBar(toolbar);
 
         //GET DATA
         Bundle bundle = getIntent().getExtras();
