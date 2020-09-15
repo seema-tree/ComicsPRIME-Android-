@@ -3,9 +3,12 @@ package com.example.comicsprime;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -15,6 +18,9 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
     FloatingActionButton addComicButton;
     androidx.appcompat.widget.Toolbar toolbar;
+    EditText searchEditText;
+    ImageButton searchButton;
+    RecyclerView comicListView;
 
 
 
@@ -22,6 +28,13 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeloggedin_page);
+
+        searchEditText = (EditText) findViewById(R.id.search_bar);
+        searchButton = (ImageButton) findViewById(R.id.search_btn);
+        comicListView = (RecyclerView) findViewById(R.id.comic_recyclerView);
+
+
+
 
         //TOOLBAR
         toolbar = findViewById(R.id.toolbar);
