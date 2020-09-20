@@ -55,8 +55,8 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
         searchButton = (ImageButton) findViewById(R.id.search_btn);
 
         comicListView = (RecyclerView) findViewById(R.id.comic_recyclerView);
-//        comicListView.setHasFixedSize(true);
-//        comicListView.setLayoutManager(new LinearLayoutManager(this));
+        comicListView.setHasFixedSize(true);
+        comicListView.setLayoutManager(new LinearLayoutManager(this));
 
         //GET DATA
         Bundle bundle = getIntent().getExtras();
@@ -75,24 +75,25 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        //RECYCLER VIEW
-        final ArrayList<String> list = new ArrayList<>();
-        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.list_layout, list);
-        comicListView.setAdapter(adapter);
-        comicsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    list.add(dataSnapshot.getValue().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        //RECYCLER VIEW
+//        final ArrayList<String> list = new ArrayList<>();
+//        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.list_layout, list);
+//
+//        comicListView.setAdapter(adapter);
+//        comicsReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                list.clear();
+//                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                    list.add(dataSnapshot.getValue().toString());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
 
         //EDITS
@@ -120,74 +121,78 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
                 String searchText = searchEditText.getText().toString().trim();
 
-//                firebaseComicSearch(searchText);
+                firebaseComicSearch(searchText);
 
             }
         });
 
     }
 
-//    private void firebaseComicSearch(String searchText) {
-//
-//        Query query = comics.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
-//
-//
-//
-//        FirebaseRecyclerOptions<Comic> options = new FirebaseRecyclerOptions.Builder<Comic>().setQuery(query, Comic.class).build();
-//
-//
-//        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Comic, ComicsViewHolder>(options) {
-//
-//
+    private void firebaseComicSearch(String searchText) {
+
+        Query query = comicsReference.orderByValue().startAt(searchText).endAt(searchText + "\uf8ff");
+
+
+
+        FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>().setQuery(query, String.class).build();
+
+
+        FirebaseRecyclerAdapter<String, ComicsViewHolder> adapter = new FirebaseRecyclerAdapter<String, ComicsViewHolder>(options) {
+
+
 //            private void populateViewHolder(ComicsViewHolder viewHolder, Comic model, int position){
 //
-//                viewHolder.setDetails(model.getTitle());
+//                viewHolder.setDetails(model.);
 //            }
-//
-//            @Override
-//            public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
-//
-//                return new ComicsViewHolder(view);
-//            }
-//
-//            @Override
-//            protected void onBindViewHolder(ComicsViewHolder holder, int position, Comic model) {
-//                // Bind the image_details object to the BlogViewHolder
-//                // ...
-//            }
-//        };
-//
-////                Comic.class,
-////                R.layout.list_layout,
-////                ComicsViewHolder.class,
-////                comics
-//
-//
-//
-//
-//        comicListView.setAdapter(adapter);
-//    }
-//
-//
-//    //VIEW HOLDER CLASS
-//
-//    public static class ComicsViewHolder extends RecyclerView.ViewHolder{
-//
-//        View mView;
-//
-//        public ComicsViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//
-//            mView = itemView;
-//        }
-//
-//        public void setDetails(String title) {
-//
-//            Button title_Button = (Button) mView.findViewById(R.id.aComicTitle);
-//            title_Button.setText(title);
-//
-//        }
-//    }
+
+            @Override
+            public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
+
+
+                return new ComicsViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(ComicsViewHolder holder, int position, String model) {
+                // Bind the image_details object to the BlogViewHolder
+                // ...
+                holder.setDetails(model);
+
+
+            }
+        };
+
+//                Comic.class,
+//                R.layout.list_layout,
+//                ComicsViewHolder.class,
+//                comics
+
+
+
+
+        comicListView.setAdapter(adapter);
+    }
+
+
+    //VIEW HOLDER CLASS
+
+    public static class ComicsViewHolder extends RecyclerView.ViewHolder{
+
+        View mView;
+
+        public ComicsViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            mView = itemView;
+        }
+
+        public void setDetails(String title) {
+
+            Button title_Button = (Button) mView.findViewById(R.id.aComicTitle);
+            title_Button.setText(title);
+
+        }
+    }
 
 }
