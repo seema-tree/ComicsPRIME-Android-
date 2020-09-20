@@ -35,8 +35,6 @@ public class AddComicsActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference comics;
 
-//    //FIREBASE USER
-//    String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
