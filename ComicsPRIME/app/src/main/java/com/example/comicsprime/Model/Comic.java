@@ -16,6 +16,10 @@ public class Comic {
         this.comicName = title + " Volume " + volume + " Issue " + issue;
     }
 
+    public Comic(){
+
+    }
+
     public String getComicName() {
         return comicName;
     }

@@ -45,7 +45,6 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
     DatabaseReference comicsReference;
 
 
-
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +65,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
         //FIREBASE
 
         database = FirebaseDatabase.getInstance();
-        comicsReference = database.getReference().child("Comics").child(bundle.getString("username"));
+        comicsReference = database.getReference().child("Comics").child(bundle.getString("username")).child("Avengers").child("5");
 
 
         //TOOLBAR
@@ -121,58 +120,62 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
                 String searchText = searchEditText.getText().toString().trim();
 
-                firebaseComicSearch(searchText);
+                //firebaseComicSearch(searchText);
 
             }
         });
 
     }
 
-    private void firebaseComicSearch(String searchText) {
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        Query query = comicsReference.orderByValue().startAt(searchText).endAt(searchText + "\uf8ff");
+        //private void firebaseComicSearch(String searchText) {
 
-
-
-        FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions.Builder<String>().setQuery(query, String.class).build();
-
-
-        FirebaseRecyclerAdapter<String, ComicsViewHolder> adapter = new FirebaseRecyclerAdapter<String, ComicsViewHolder>(options) {
+            //Query query = comicsReference.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
 
 
-//            private void populateViewHolder(ComicsViewHolder viewHolder, Comic model, int position){
-//
-//                viewHolder.setDetails(model.);
-//            }
 
-            @Override
-            public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
+            FirebaseRecyclerOptions<Comic> options =
+                    new FirebaseRecyclerOptions.Builder<Comic>()
+                            .setQuery(comicsReference, Comic.class)
+                            .build();
 
 
-                return new ComicsViewHolder(view);
-            }
+            FirebaseRecyclerAdapter<Comic, ComicsViewHolder> adapter = new FirebaseRecyclerAdapter<Comic, ComicsViewHolder>(options) {
 
-            @Override
-            protected void onBindViewHolder(ComicsViewHolder holder, int position, String model) {
-                // Bind the image_details object to the BlogViewHolder
-                // ...
-                holder.setDetails(model);
+                @Override
+                public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
 
 
-            }
-        };
+                    return new ComicsViewHolder(view);
+                }
+
+                @Override
+                protected void onBindViewHolder(ComicsViewHolder holder, int position, Comic model) {
+                    // Bind the image_details object to the BlogViewHolder
+                    // ...
+                    holder.setDetails(model.getTitle());
+
+
+                }
+            };
 
 //                Comic.class,
 //                R.layout.list_layout,
 //                ComicsViewHolder.class,
-//                comics
+//                comicsReference
 
 
 
-
-        comicListView.setAdapter(adapter);
+            comicListView.setAdapter(adapter);
+            adapter.startListening();
+        //}
     }
+
+
 
 
     //VIEW HOLDER CLASS
@@ -191,6 +194,13 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
             Button title_Button = (Button) mView.findViewById(R.id.aComicTitle);
             title_Button.setText(title);
+
+            title_Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
 
         }
     }
