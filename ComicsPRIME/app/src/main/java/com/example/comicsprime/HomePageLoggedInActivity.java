@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.comicsprime.Adapters.titleRecyclerAdapter;
 import com.example.comicsprime.Model.Comic;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -29,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HomePageLoggedInActivity extends AppCompatActivity {
+public class HomePageLoggedInActivity extends AppCompatActivity implements titleRecyclerAdapter.OnComicListener {
 
     private static final String TAG = "HomePageLoggedInActivity";
 
@@ -44,11 +45,19 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference comicsReference;
 
+    //GET DATA
+    String username_1;
+
+
+    //RECYCLER VIEW
+    final ArrayList<String> list = new ArrayList<>();
+
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeloggedin_page);
+
 
         searchEditText = (EditText) findViewById(R.id.search_bar);
         searchButton = (ImageButton) findViewById(R.id.search_btn);
@@ -59,13 +68,13 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
 
         //GET DATA
         Bundle bundle = getIntent().getExtras();
-        final String username_1 = bundle.getString("username");
+        username_1 = bundle.getString("username");
 
 
         //FIREBASE
 
         database = FirebaseDatabase.getInstance();
-        comicsReference = database.getReference().child("Comics").child(bundle.getString("username")).child("Avengers").child("5");
+        comicsReference = database.getReference().child("Comics").child(username_1);
 
 
         //TOOLBAR
@@ -74,25 +83,24 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-//        //RECYCLER VIEW
-//        final ArrayList<String> list = new ArrayList<>();
-//        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.list_layout, list);
-//
-//        comicListView.setAdapter(adapter);
-//        comicsReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                list.clear();
-//                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-//                    list.add(dataSnapshot.getValue().toString());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        //RECYCLER VIEW
+        titleRecyclerAdapter mTitleRecyclerAdapter = new titleRecyclerAdapter(list, this);
+        comicListView.setAdapter(mTitleRecyclerAdapter);
+
+        comicsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    list.add(dataSnapshot.getKey().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         //EDITS
@@ -128,81 +136,69 @@ public class HomePageLoggedInActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onComicClick(int position) {
+        Intent intent = new Intent(this, VolumesActivity.class);
 
-        //private void firebaseComicSearch(String searchText) {
+        //PASS DATA
+        intent.putExtra("username_1", username_1);
+        intent.putExtra("title_name", list.get(position));
 
-            //Query query = comicsReference.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
-
-
-
-            FirebaseRecyclerOptions<Comic> options =
-                    new FirebaseRecyclerOptions.Builder<Comic>()
-                            .setQuery(comicsReference, Comic.class)
-                            .build();
+        startActivity(intent);
 
 
-            FirebaseRecyclerAdapter<Comic, ComicsViewHolder> adapter = new FirebaseRecyclerAdapter<Comic, ComicsViewHolder>(options) {
-
-                @Override
-                public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
-
-
-                    return new ComicsViewHolder(view);
-                }
-
-                @Override
-                protected void onBindViewHolder(ComicsViewHolder holder, int position, Comic model) {
-                    // Bind the image_details object to the BlogViewHolder
-                    // ...
-                    holder.setDetails(model.getTitle());
-
-
-                }
-            };
-
-//                Comic.class,
-//                R.layout.list_layout,
-//                ComicsViewHolder.class,
-//                comicsReference
-
-
-
-            comicListView.setAdapter(adapter);
-            adapter.startListening();
-        //}
     }
 
 
 
 
-    //VIEW HOLDER CLASS
 
-    public static class ComicsViewHolder extends RecyclerView.ViewHolder{
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        //private void firebaseComicSearch(String searchText) {
+//
+//            //Query query = comicsReference.orderByChild("title").startAt(searchText).endAt(searchText + "\uf8ff");
+//
+//
+//
+//            FirebaseRecyclerOptions<Comic> options =
+//                    new FirebaseRecyclerOptions.Builder<Comic>()
+//                            .setQuery(comicsReference, Comic.class)
+//                            .build();
+//
+//
+//            FirebaseRecyclerAdapter<Comic, ComicsViewHolder> adapter = new FirebaseRecyclerAdapter<Comic, ComicsViewHolder>(options) {
+//
+//                @Override
+//                public ComicsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false);
+//
+//
+//                    return new ComicsViewHolder(view);
+//                }
+//
+//                @Override
+//                protected void onBindViewHolder(ComicsViewHolder holder, int position, Comic model) {
+//                    // Bind the image_details object to the BlogViewHolder
+//                    // ...
+//                    holder.setDetails(model.getTitle());
+//
+//
+//                }
+//            };
+//
+////                Comic.class,
+////                R.layout.list_layout,
+////                ComicsViewHolder.class,
+////                comicsReference
+//
+//
+//
+//            comicListView.setAdapter(adapter);
+//            adapter.startListening();
+//        //}
+//    }
 
-        View mView;
-
-        public ComicsViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            mView = itemView;
-        }
-
-        public void setDetails(String title) {
-
-            Button title_Button = (Button) mView.findViewById(R.id.aComicTitle);
-            title_Button.setText(title);
-
-            title_Button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    
-                }
-            });
-
-        }
-    }
 
 }
