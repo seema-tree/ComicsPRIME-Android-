@@ -6,6 +6,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,10 @@ public class AddComicsActivity extends AppCompatActivity {
     private static final String TAG = "AddComicsActivity";
 
     Button btnAdd;
-    TextView editTitle, editVolume, editIssue;
+    TextView editTitle, editVolume, editIssue, editEvent;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+
 
     //FIREBASE
 
@@ -43,30 +48,18 @@ public class AddComicsActivity extends AppCompatActivity {
 
         btnAdd = (Button) findViewById(R.id.addnewcomic);
 
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+
         editTitle = (TextView) findViewById(R.id.edittextTitle);
         editVolume = (TextView) findViewById(R.id.edittextVolume);
         editIssue = (TextView) findViewById(R.id.edittextIssue);
+        editEvent = (TextView) findViewById(R.id.editTextEventName);
 
         //TO ENABLE BUTTON AFTER TEXT IS WRITTEN
 
         editTitle.addTextChangedListener(loginTextWatch);
         editVolume.addTextChangedListener(loginTextWatch);
-        editIssue.addTextChangedListener(loginTextWatch);
-
-//
-//        //FIREBASE USER
-//
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-//
-//                if (firebaseUser != null) {
-//                    userId = firebaseUser.getUid();
-//                }
-//            }
-//        };
+        editIssue.addTextChangedListener(loginTextWatch);;
 
         
         //GET DATA AND PASS TO INTENT
@@ -78,35 +71,84 @@ public class AddComicsActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         comics = database.getReference().child("Comics").child(username_2);
 
+        //RadioButtons
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(radioId);
+
 
         //BUTTON
-
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Comic newComic = new Comic(editTitle.getText().toString().trim(),
-                                                 editVolume.getText().toString().trim(),
-                                                 editIssue.getText().toString().trim());
 
-                final String title_name = editTitle.getText().toString().trim();
-                final String volume_name = editVolume.getText().toString().trim();
-                final String issue_name = editIssue.getText().toString().trim();
+                if(radioButton.getText().toString().equals("Yes")){
 
-                //ADD
 
-                comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();
-                    }
-                });
+
+                    final Comic newComic = new Comic(editTitle.getText().toString().trim(),
+                            editVolume.getText().toString().trim(),
+                            editIssue.getText().toString().trim(),
+                            true,
+                            editEvent.getText().toString().trim());
+
+                    final String title_name = editTitle.getText().toString().trim();
+                    final String volume_name = editVolume.getText().toString().trim();
+                    final String issue_name = editIssue.getText().toString().trim();
+
+                    //ADD
+
+                    comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }else{
+
+                    final Comic newComic = new Comic(editTitle.getText().toString().trim(),
+                            editVolume.getText().toString().trim(),
+                            editIssue.getText().toString().trim(),
+                            false);
+
+                    final String title_name = editTitle.getText().toString().trim();
+                    final String volume_name = editVolume.getText().toString().trim();
+                    final String issue_name = editIssue.getText().toString().trim();
+
+                    //ADD
+
+                    comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
 
                 openHomePageActivity(username_2);
 
             }
         });
 
+    }
+
+    //FOR ENABLING AND DISABLING EVENT NAME EDITTEXT
+    public void checkButton(View v){
+
+        int radioId = radioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(radioId);
+
+        if(radioButton.getText().toString().equals("Yes")){
+
+            editEvent.setVisibility(View.VISIBLE);
+
+        }else{
+
+            editEvent.setVisibility(View.INVISIBLE);
+
+        }
     }
 
 

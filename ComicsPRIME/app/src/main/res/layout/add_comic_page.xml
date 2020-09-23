@@ -12,6 +12,12 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="96dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/edittexts_layout"
+        android:textSize="20sp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
 
         android:hint="Title"
         android:inputType="text"
@@ -27,6 +33,12 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/edittexts_layout"
+        android:textSize="20sp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
 
         android:hint="Volume"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -34,7 +46,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
+        app:layout_constraintTop_toBottomOf="@+id/edittextIssue" />
 
 
     <EditText
@@ -44,6 +56,12 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/edittexts_layout"
+        android:textSize="20sp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
 
         android:hint="Issue"
         android:imeActionLabel="@string/action_sign_in_short"
@@ -51,8 +69,74 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/edittextTitle" />
 
+    <TextView
+        android:id="@+id/textViewQuestion"
+        android:text="Is this comic part of an event?"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="24dp"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="15dp"
+
+        />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp">
+
+
+        <RadioButton
+            android:id="@+id/radioButtonYES"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:textSize="20sp"
+
+            android:onClick="checkButton"
+            />
+
+        <EditText
+            android:id="@+id/editTextEventName"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Event Name"
+            android:visibility="invisible"
+
+            android:background="@drawable/edittexts_layout"
+            android:textSize="20sp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            />
+
+
+        <RadioButton
+            android:id="@+id/radioButtonNO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:textSize="20sp"
+            android:checked="true"
+
+            android:onClick="checkButton"
+            />
+    </RadioGroup>
 
     <Button
         android:id="@+id/addnewcomic"
@@ -64,12 +148,18 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
         android:enabled="false"
-        android:background="@color/colorPrimary"
         android:textColor="#FFF"
         android:text="ADD COMIC"
+        android:background="@drawable/buttons_layout"
+        android:textSize="20sp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone"
+        app:layout_constraintTop_toBottomOf="@+id/edittextIssue"
         app:layout_constraintVertical_bias="0.2" />
 </LinearLayout>

@@ -68,7 +68,7 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
         //TOOLBAR
         toolbarIssue = findViewById(R.id.toolbarIssue);
-        toolbarIssue.setTitle(title_name + " " + volume_name); //SETTING OTHER TITLE
+        toolbarIssue.setTitle(title_name + " Volume " +  volume_name); //SETTING OTHER TITLE
         setSupportActionBar(toolbarIssue);
 
 
