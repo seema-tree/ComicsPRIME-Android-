@@ -85,25 +85,28 @@ public class AddComicsActivity extends AppCompatActivity {
                 if(radioButton.getText().toString().equals("Yes")){
 
 
+                    if(editEvent.getText().toString().trim().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "Event name cannot be empty. Select 'No'  if this issue is not a part of an event", Toast.LENGTH_LONG).show();
+                    }else {
+                        final Comic newComic = new Comic(editTitle.getText().toString().trim(),
+                                editVolume.getText().toString().trim(),
+                                editIssue.getText().toString().trim(),
+                                true,
+                                editEvent.getText().toString().trim());
 
-                    final Comic newComic = new Comic(editTitle.getText().toString().trim(),
-                            editVolume.getText().toString().trim(),
-                            editIssue.getText().toString().trim(),
-                            true,
-                            editEvent.getText().toString().trim());
+                        final String title_name = editTitle.getText().toString().trim();
+                        final String volume_name = editVolume.getText().toString().trim();
+                        final String issue_name = editIssue.getText().toString().trim();
 
-                    final String title_name = editTitle.getText().toString().trim();
-                    final String volume_name = editVolume.getText().toString().trim();
-                    final String issue_name = editIssue.getText().toString().trim();
+                        //ADD
 
-                    //ADD
-
-                    comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                        comics.child(title_name).child(volume_name).child(issue_name).setValue(newComic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Added Successfully !", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
 
                 }else{
 
