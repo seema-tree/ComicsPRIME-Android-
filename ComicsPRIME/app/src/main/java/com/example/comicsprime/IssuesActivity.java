@@ -1,5 +1,6 @@
 package com.example.comicsprime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -97,6 +98,16 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
     @Override
     public void onComicIssueClick(int position) {
+
+        Intent intent = new Intent(this, ComicDetails.class);
+
+        //PASS DATA
+        intent.putExtra("username", username);
+        intent.putExtra("title_name", title_name);
+        intent.putExtra("volume_name", volume_name);
+        intent.putExtra("issue_name", listIssues.get(position));
+
+        startActivity(intent);
 
     }
 }
