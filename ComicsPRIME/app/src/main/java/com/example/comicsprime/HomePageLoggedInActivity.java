@@ -91,13 +91,14 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
 
         //RECYCLER VIEW
-        titleRecyclerAdapter mTitleRecyclerAdapter = new titleRecyclerAdapter(list, this);
+        final titleRecyclerAdapter mTitleRecyclerAdapter = new titleRecyclerAdapter(list, this);
         comicListView.setAdapter(mTitleRecyclerAdapter);
 
         comicsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     list.add(dataSnapshot.getKey().toString());
                 }
@@ -129,23 +130,30 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
         //SEARCH BUTTON
 
+        final titleRecyclerAdapter mTitleRecyclerAdapter2 = new titleRecyclerAdapter(list, this);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 final String searchText = searchEditText.getText().toString().trim();
+                list.clear();
+
+                comicListView.setAdapter(mTitleRecyclerAdapter2);
 
                 comicsReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        list.clear();
+
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+
                             String keys = dataSnapshot.getKey().toString();
                             if(keys.contains(searchText)){
                                 list.add(dataSnapshot.getKey().toString());
                             }
                         }
                     }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

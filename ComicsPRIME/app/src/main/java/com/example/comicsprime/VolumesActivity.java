@@ -2,6 +2,7 @@ package com.example.comicsprime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -96,6 +97,44 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //SEARCH BUTTON
+
+        final volumeRecyclerAdapter mVolumeRecyclerAdapter2 = new volumeRecyclerAdapter(listVolumes, this);
+
+
+        searchButtonVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String searchText = searchEditTextVolume.getText().toString().trim();
+                listVolumes.clear();
+
+                comicListViewVolume.setAdapter(mVolumeRecyclerAdapter2);
+
+                comicsVolumeReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listVolumes.clear();
+
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                            String keys = dataSnapshot.getKey().toString();
+                            if(keys.contains(searchText)){
+                                listVolumes.add(dataSnapshot.getKey().toString());
+                            }
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
             }
         });
