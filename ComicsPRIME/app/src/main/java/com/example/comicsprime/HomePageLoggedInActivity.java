@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -33,24 +34,27 @@ import java.util.ArrayList;
 public class HomePageLoggedInActivity extends AppCompatActivity implements titleRecyclerAdapter.OnComicListener {
 
     private static final String TAG = "HomePageLoggedInActivity";
+    private static final int FACTS = 59;
 
     FloatingActionButton addComicButton;
     androidx.appcompat.widget.Toolbar toolbar;
     EditText searchEditText;
     ImageButton searchButton;
     RecyclerView comicListView;
+    TextView factsTextView;
 
     //FIREBASE
 
     FirebaseDatabase database;
     DatabaseReference comicsReference;
+    DatabaseReference factsReference;
 
     //GET DATA
     String username_1;
 
 
     //RECYCLER VIEW
-    final ArrayList<String> list = new ArrayList<>();
+    ArrayList<String> list = new ArrayList<>();
 
 
     @Override
@@ -61,6 +65,8 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
         searchEditText = (EditText) findViewById(R.id.search_bar);
         searchButton = (ImageButton) findViewById(R.id.search_btn);
+
+        factsTextView = (TextView) findViewById(R.id.facts);
 
         comicListView = (RecyclerView) findViewById(R.id.comic_recyclerView);
         comicListView.setHasFixedSize(true);
@@ -75,6 +81,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
         database = FirebaseDatabase.getInstance();
         comicsReference = database.getReference().child("Comics").child(username_1);
+        factsReference = database.getReference().child("Facts");
 
 
         //TOOLBAR
@@ -126,12 +133,52 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
             @Override
             public void onClick(View v) {
 
-                String searchText = searchEditText.getText().toString().trim();
+                final String searchText = searchEditText.getText().toString().trim();
 
-                //firebaseComicSearch(searchText);
+                comicsReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        list.clear();
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            String keys = dataSnapshot.getKey().toString();
+                            if(keys.contains(searchText)){
+                                list.add(dataSnapshot.getKey().toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
             }
         });
+
+        //FACTS
+
+        final String posi = Integer.toString((int) Math.floor(Math.random() * FACTS));
+        factsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if(dataSnapshot.getKey().toString().equals(posi)){
+
+                        String facts_text = "Did you know? \n" + dataSnapshot.getValue().toString();
+
+                        factsTextView.setText(facts_text);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -147,6 +194,8 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
 
     }
+
+
 
 
 

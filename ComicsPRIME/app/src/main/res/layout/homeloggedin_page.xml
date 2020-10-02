@@ -8,17 +8,38 @@
     android:layout_height="match_parent"
     android:background="@mipmap/bg7">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addComic"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:backgroundTint="#66b5ad"
-        android:tint="#ffffff"
-        app:maxImageSize="50dp"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:id="@+id/facts"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content"
+
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:text="FACTS" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addComic"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:backgroundTint="#66b5ad"
+            android:tint="#ffffff"
+            app:maxImageSize="50dp"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </LinearLayout>
 
 
 
@@ -44,7 +65,8 @@
 
             <EditText
                 android:id="@+id/search_bar"
-                android:layout_width="316dp"
+                android:layout_width="0dp"
+                android:layout_weight="11"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/search_layout"
@@ -64,7 +86,9 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                app:srcCompat="@mipmap/search_button" />
+                app:srcCompat="@mipmap/search_button"
+                android:focusable="true"
+                android:clickable="true"/>
 
 
         </LinearLayout>
@@ -73,7 +97,9 @@
             android:id="@+id/comic_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="90dp"/>
+
 
 
     </LinearLayout>

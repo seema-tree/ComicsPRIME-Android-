@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,23 +25,26 @@ import java.util.ArrayList;
 public class VolumesActivity extends AppCompatActivity implements volumeRecyclerAdapter.OnComicVolumeListener {
 
     private static final String TAG = "VolumesActivity";
+    private static final int FACTS = 59;
 
     androidx.appcompat.widget.Toolbar toolbarVolume;
     EditText searchEditTextVolume;
     ImageButton searchButtonVolume;
     RecyclerView comicListViewVolume;
+    TextView factsTextViewVolume;
 
     //FIREBASE
 
     FirebaseDatabase database;
     DatabaseReference comicsVolumeReference;
+    DatabaseReference factsReference;
 
     //GET DATA
     String username;
     String title_name;
 
     //RECYCLER VIEW
-    final ArrayList<String> listVolumes = new ArrayList<>();
+    ArrayList<String> listVolumes = new ArrayList<>();
 
 
 
@@ -58,6 +62,8 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
         searchEditTextVolume = (EditText) findViewById(R.id.search_barVolume);
         searchButtonVolume = (ImageButton) findViewById(R.id.search_btnVolume);
 
+        factsTextViewVolume = (TextView) findViewById(R.id.factsVolume);
+
         comicListViewVolume = (RecyclerView) findViewById(R.id.comic_recyclerViewVolume);
         comicListViewVolume.setHasFixedSize(true);
         comicListViewVolume.setLayoutManager(new LinearLayoutManager(this));
@@ -66,6 +72,7 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
 
         database = FirebaseDatabase.getInstance();
         comicsVolumeReference = database.getReference().child("Comics").child(username).child(title_name);
+        factsReference = database.getReference().child("Facts");
 
 
         //TOOLBAR
@@ -84,6 +91,29 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
                 listVolumes.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     listVolumes.add(dataSnapshot.getKey().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        //FACTS
+
+        final String posi = Integer.toString((int) Math.floor(Math.random() * FACTS));
+        factsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if(dataSnapshot.getKey().toString().equals(posi)){
+
+                        String facts_text = "Did you know? \n" + dataSnapshot.getValue().toString();
+
+                        factsTextViewVolume.setText(facts_text);
+                    }
                 }
             }
 
