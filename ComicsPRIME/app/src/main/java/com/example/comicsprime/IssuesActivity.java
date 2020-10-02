@@ -2,6 +2,7 @@ package com.example.comicsprime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -95,6 +96,43 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //SEARCH BUTTON
+
+        final issueRecyclerAdapter mIssueRecyclerAdapter2 = new issueRecyclerAdapter(listIssues, this);
+
+        searchButtonIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final String searchText = searchEditTextIssue.getText().toString().trim();
+                listIssues.clear();
+
+                comicListViewIssue.setAdapter(mIssueRecyclerAdapter2);
+
+                comicsIssueReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listIssues.clear();
+
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+                            String keys = dataSnapshot.getKey().toString();
+                            if(keys.contains(searchText)){
+                                listIssues.add(keys);
+                            }
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
             }
         });
