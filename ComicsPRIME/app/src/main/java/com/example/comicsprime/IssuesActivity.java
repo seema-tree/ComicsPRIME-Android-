@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,11 +24,14 @@ import java.util.ArrayList;
 public class IssuesActivity extends AppCompatActivity implements issueRecyclerAdapter.OnComicIssueListener{
 
     private static final String TAG = "IssuesActivity";
+    private static final int FACTS = 59;
 
     androidx.appcompat.widget.Toolbar toolbarIssue;
     EditText searchEditTextIssue;
     ImageButton searchButtonIssue;
     RecyclerView comicListViewIssue;
+    TextView factsTextViewIssue;
+    DatabaseReference factsReference;
 
     //FIREBASE
 
@@ -40,7 +44,7 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
     String volume_name;
 
     //RECYCLER VIEW
-    final ArrayList<String> listIssues = new ArrayList<>();
+    ArrayList<String> listIssues = new ArrayList<>();
 
 
     @Override
@@ -57,6 +61,8 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
         searchEditTextIssue = (EditText) findViewById(R.id.search_barIssue);
         searchButtonIssue = (ImageButton) findViewById(R.id.search_btnIssue);
 
+        factsTextViewIssue = (TextView) findViewById(R.id.factsIssue);
+
         comicListViewIssue = (RecyclerView) findViewById(R.id.comic_recyclerViewIssue);
         comicListViewIssue.setHasFixedSize(true);
         comicListViewIssue.setLayoutManager(new LinearLayoutManager(this));
@@ -65,6 +71,7 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
         database = FirebaseDatabase.getInstance();
         comicsIssueReference = database.getReference().child("Comics").child(username).child(title_name).child(volume_name);
+        factsReference = database.getReference().child("Facts");
 
 
         //TOOLBAR
@@ -83,6 +90,28 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
                 listIssues.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     listIssues.add(dataSnapshot.getKey().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //FACTS
+
+        final String posi = Integer.toString((int) Math.floor(Math.random() * FACTS));
+        factsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if(dataSnapshot.getKey().toString().equals(posi)){
+
+                        String facts_text = "Did you know? \n" + dataSnapshot.getValue().toString();
+
+                        factsTextViewIssue.setText(facts_text);
+                    }
                 }
             }
 
