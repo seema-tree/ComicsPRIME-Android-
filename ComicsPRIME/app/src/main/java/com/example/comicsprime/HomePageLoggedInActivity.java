@@ -146,6 +146,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
                             }
                         }
                     }
+                    
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
