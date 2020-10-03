@@ -1,6 +1,7 @@
 package com.example.comicsprime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ public class LoginActivity extends Fragment {
 
     EditText editusername, editpassword;
     Button btnLogin;
+    CheckBox rememberMe;
 
     //FIREBASE
 
@@ -56,6 +60,7 @@ public class LoginActivity extends Fragment {
 
         editusername = view.findViewById(R.id.loginusername);
         editpassword = view.findViewById(R.id.loginpassword);
+        rememberMe = view.findViewById(R.id.rememberMe);
 
         btnLogin = (Button) view.findViewById(R.id.login);
 
@@ -66,9 +71,13 @@ public class LoginActivity extends Fragment {
 
         //FIREBASE
 
-
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+
+        //REMEMBER ME
+
+
+        //EDITS
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +85,37 @@ public class LoginActivity extends Fragment {
                 signin(editusername.getText().toString(),
                         editpassword.getText().toString());
 
+            }
+        });
+
+        //REMEMBER ME SHARED PREFERENCE
+        rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    SharedPreferences sharedPreferences = getSh //////////////////////////////////
+                    /
+                            /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+                    /
+
+                }else if(!buttonView.isChecked()){
+
+                }
             }
         });
 
