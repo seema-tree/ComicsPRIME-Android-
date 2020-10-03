@@ -1,18 +1,28 @@
 package com.example.comicsprime;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.comicsprime.Model.Comic;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ComicDetails extends AppCompatActivity {
 
     private final String TAG = "ComicDetails";
 
     androidx.appcompat.widget.Toolbar toolbarComicDetails;
+    TextView details;
+
+    Comic comic = new Comic();
 
 
     //FIREBASE
@@ -31,6 +41,10 @@ public class ComicDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comic_details_page);
 
+        details = (TextView) findViewById(R.id.details);
+        //SCROLL
+        details.setMovementMethod(new ScrollingMovementMethod());
+
         //GET DATA
         Bundle bundle = getIntent().getExtras();
         username = bundle.getString("username");
@@ -48,5 +62,26 @@ public class ComicDetails extends AppCompatActivity {
         toolbarComicDetails = findViewById(R.id.toolbarComicsDetails);
         toolbarComicDetails.setTitle(title_name + " Vol " +  volume_name + " " + issue_name); //SETTING OTHER TITLE
         setSupportActionBar(toolbarComicDetails);
+
+        //EDITS
+
+        comicDetailsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                comic = snapshot.getValue(Comic.class);
+                if(comic.isPartOfEvent()){
+                    details.setText(comic.getComicName() + " is a part of " + comic.getEventName() + " event. \n");
+                }else{
+                    details.setText("");
+                }
+
+                
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
