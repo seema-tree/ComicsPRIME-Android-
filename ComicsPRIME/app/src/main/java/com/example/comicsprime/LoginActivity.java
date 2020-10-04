@@ -1,5 +1,6 @@
 package com.example.comicsprime;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
@@ -35,7 +36,7 @@ public class LoginActivity extends Fragment {
 
     EditText editusername, editpassword;
     Button btnLogin;
-    CheckBox rememberMe;
+    //CheckBox rememberMe;
 
     //FIREBASE
 
@@ -60,7 +61,7 @@ public class LoginActivity extends Fragment {
 
         editusername = view.findViewById(R.id.loginusername);
         editpassword = view.findViewById(R.id.loginpassword);
-        rememberMe = view.findViewById(R.id.rememberMe);
+        //rememberMe = view.findViewById(R.id.rememberMe);
 
         btnLogin = (Button) view.findViewById(R.id.login);
 
@@ -74,50 +75,51 @@ public class LoginActivity extends Fragment {
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
 
-        //REMEMBER ME
-
+//        //REMEMBER ME
+//        SharedPreferences preferences = getContext().getSharedPreferences("checkbox", Context.MODE_PRIVATE);
+//        String checkbox = preferences.getString("remember", "");
+//        if(checkbox.equals("true")){
+//
+//            openLoggedInActivity();
+//
+//        }else if(checkbox.equals("false")){
+//
+//            Toast.makeText(getActivity(), "Please Sign in", Toast.LENGTH_LONG).show();
+//
+//        }
 
         //EDITS
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signin(editusername.getText().toString(),
-                        editpassword.getText().toString());
+                signin(editusername.getText().toString().trim(),
+                        editpassword.getText().toString().trim());
 
             }
         });
 
-        //REMEMBER ME SHARED PREFERENCE
-        rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    SharedPreferences sharedPreferences = getSh //////////////////////////////////
-                    /
-                            /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-                    /
-
-                }else if(!buttonView.isChecked()){
-
-                }
-            }
-        });
+//        //REMEMBER ME SHARED PREFERENCE
+//        rememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(buttonView.isChecked()){
+//
+//                    SharedPreferences sharedPreferences = getContext().getSharedPreferences("checkbox", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("remember", "true");
+//                    editor.apply();
+//
+//                }else if(!buttonView.isChecked()){
+//
+//                    SharedPreferences sharedPreferences = getContext().getSharedPreferences("checkbox", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putString("remember", "false");
+//                    editor.apply();
+//
+//                }
+//            }
+//        });
 
 
 

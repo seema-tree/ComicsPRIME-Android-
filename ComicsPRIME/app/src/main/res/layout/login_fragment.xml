@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
-    <CheckBox
+    <!--<CheckBox
         android:id="@+id/rememberMe"
 
         android:layout_width="240dp"
@@ -63,7 +63,7 @@
         android:paddingBottom="5dp"
         android:paddingEnd="15dp"
 
-        android:text="Remember Me" />
+        android:text="Remember Me" />-->
 
     <Button
         android:id="@+id/login"
