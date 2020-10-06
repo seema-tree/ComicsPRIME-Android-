@@ -2,6 +2,7 @@ package com.example.comicsprime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,11 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.comicsprime.Adapters.issueRecyclerAdapter;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +52,9 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
     //RECYCLER VIEW
     ArrayList<String> listIssues = new ArrayList<>();
 
+    //NAVIGATION BAR
+    private DrawerLayout drawerIssue;
+    NavigationView navigationViewIssue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +87,40 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
         toolbarIssue = findViewById(R.id.toolbarIssue);
         toolbarIssue.setTitle(title_name + " Volume " +  volume_name); //SETTING OTHER TITLE
         setSupportActionBar(toolbarIssue);
+
+        //NAVIGATION BAR
+        drawerIssue = findViewById(R.id.drawer_layoutIssue);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerIssue, toolbarIssue, R.string.navigation_drawer_open, R.string.navigation_drawer_close); //1
+        drawerIssue.addDrawerListener(toggle); //2
+        toggle.syncState(); //NAVIGTION BAR DONE, NOW NAVIGATION SETTINGS (//1 and //2 for NAVIGATION TOGGLE BUTTON ON TOOLBAR)
+        navigationViewIssue = findViewById(R.id.nav_viewIssue);
+        navigationViewIssue.setCheckedItem(R.id.nav_mycomics);
+        navigationViewIssue.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_mycomics:
+                        Intent intent1 = new Intent(getApplicationContext(), HomePageLoggedInActivity.class);
+
+                        //PASS DATA
+                        intent1.putExtra("username", username);
+
+                        startActivity(intent1);
+                        break;
+                    case R.id.nav_upcoming:
+                        Intent intent2 = new Intent(getApplicationContext(), UpcomingComicsActivity.class);
+
+                        //PASS DATA
+                        intent2.putExtra("username", username);
+
+                        startActivity(intent2);
+
+                }
+
+                drawerIssue.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
 
         //RECYCLER VIEW
@@ -176,5 +218,15 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
         startActivity(intent);
 
+    }
+
+    //SET WHAT BACK BUTTON DOES
+    @Override
+    public void onBackPressed() {
+        if(drawerIssue.isDrawerOpen(GravityCompat.START)){
+            drawerIssue.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
     }
 }
