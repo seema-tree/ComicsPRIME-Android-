@@ -136,7 +136,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
             @Override
             public void onClick(View v) {
 
-                final String searchText = searchEditText.getText().toString().trim();
+                final String searchText = searchEditText.getText().toString().trim().toUpperCase();
                 list.clear();
 
                 comicListView.setAdapter(mTitleRecyclerAdapter2);
@@ -147,7 +147,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
 
-                            String keys = dataSnapshot.getKey().toString();
+                            String keys = dataSnapshot.getKey().toString().toUpperCase();
                             if(keys.contains(searchText)){
                                 list.add(dataSnapshot.getKey().toString());
                             }
