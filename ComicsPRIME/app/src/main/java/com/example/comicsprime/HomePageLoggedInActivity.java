@@ -3,6 +3,7 @@ package com.example.comicsprime;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,10 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +26,7 @@ import com.example.comicsprime.Model.Comic;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +48,10 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
     RecyclerView comicListView;
     TextView factsTextView;
 
+    //NAVIGATION BAR
+    private DrawerLayout drawer;
+    NavigationView navigationView;
+
     //FIREBASE
 
     FirebaseDatabase database;
@@ -50,7 +59,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
     DatabaseReference factsReference;
 
     //GET DATA
-    String username_1;
+    String username;
 
 
     //RECYCLER VIEW
@@ -74,13 +83,13 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
         //GET DATA
         Bundle bundle = getIntent().getExtras();
-        username_1 = bundle.getString("username");
+        username = bundle.getString("username");
 
 
         //FIREBASE
 
         database = FirebaseDatabase.getInstance();
-        comicsReference = database.getReference().child("Comics").child(username_1);
+        comicsReference = database.getReference().child("Comics").child(username);
         factsReference = database.getReference().child("Facts");
 
 
@@ -88,6 +97,42 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("My Comics"); //SETTING OTHER TITLE
         setSupportActionBar(toolbar);
+
+        //NAVIGATION BAR
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState(); //NAVIGTION BAR DONE, NOW NAVIGATION SETTINGS
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_mycomics);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_mycomics:
+                        Intent intent1 = new Intent(getApplicationContext(), HomePageLoggedInActivity.class);
+
+                        //PASS DATA
+                        intent1.putExtra("username", username);
+
+                        startActivity(intent1);
+                        break;
+                    case R.id.nav_upcoming:
+                        Intent intent2 = new Intent(getApplicationContext(), UpcomingComicsActivity.class);
+
+                        //PASS DATA
+                        intent2.putExtra("username", username);
+
+                        startActivity(intent2);
+
+                }
+
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+
 
 
         //RECYCLER VIEW
@@ -121,7 +166,7 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
                 Intent s = new Intent(getApplicationContext(), AddComicsActivity.class);
 
                 //PASS DATA
-                s.putExtra("username_1", username_1);
+                s.putExtra("username", username);
 
                 startActivity(s);
             }
@@ -190,12 +235,14 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
     }
 
+
+    //WHAT DOES CLICKING COMIC DOES
     @Override
     public void onComicClick(int position) {
         Intent intent = new Intent(this, VolumesActivity.class);
 
         //PASS DATA
-        intent.putExtra("username_1", username_1);
+        intent.putExtra("username", username);
         intent.putExtra("title_name", list.get(position));
 
         startActivity(intent);
@@ -203,13 +250,17 @@ public class HomePageLoggedInActivity extends AppCompatActivity implements title
 
     }
 
+    //SET WHAT BACK BUTTON DOES
+    @Override
+    public void onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
 
-
-
-
-
-
-//    @Override
+    //    @Override
 //    protected void onStart() {
 //        super.onStart();
 //

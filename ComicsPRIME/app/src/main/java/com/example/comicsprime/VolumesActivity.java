@@ -2,6 +2,7 @@ package com.example.comicsprime;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,12 +10,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.comicsprime.Adapters.volumeRecyclerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +52,9 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
     //RECYCLER VIEW
     ArrayList<String> listVolumes = new ArrayList<>();
 
-
+    //NAVIGATION BAR
+    private DrawerLayout drawerVolume;
+    NavigationView navigationViewVolume;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +63,7 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
 
         //GET DATA
         Bundle bundle = getIntent().getExtras();
-        username = bundle.getString("username_1");
+        username = bundle.getString("username");
         title_name = bundle.getString("title_name");
 
 
@@ -80,6 +87,40 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
         toolbarVolume = findViewById(R.id.toolbarVolume);
         toolbarVolume.setTitle(title_name); //SETTING OTHER TITLE
         setSupportActionBar(toolbarVolume);
+
+        //NAVIGATION BAR
+        drawerVolume = findViewById(R.id.drawer_layoutVolume);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerVolume, toolbarVolume, R.string.navigation_drawer_open, R.string.navigation_drawer_close); //1
+        drawerVolume.addDrawerListener(toggle); //2
+        toggle.syncState(); //NAVIGTION BAR DONE, NOW NAVIGATION SETTINGS (//1 and //2 for NAVIGATION TOGGLE BUTTON ON TOOLBAR)
+        navigationViewVolume = findViewById(R.id.nav_viewVolume);
+        navigationViewVolume.setCheckedItem(R.id.nav_mycomics);
+        navigationViewVolume.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_mycomics:
+                        Intent intent1 = new Intent(getApplicationContext(), HomePageLoggedInActivity.class);
+
+                        //PASS DATA
+                        intent1.putExtra("username", username);
+
+                        startActivity(intent1);
+                        break;
+                    case R.id.nav_upcoming:
+                        Intent intent2 = new Intent(getApplicationContext(), UpcomingComicsActivity.class);
+
+                        //PASS DATA
+                        intent2.putExtra("username", username);
+
+                        startActivity(intent2);
+
+                }
+
+                drawerVolume.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
 
 
         //RECYCLER VIEW
@@ -177,5 +218,15 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
 
         startActivity(intent);
 
+    }
+
+    //SET WHAT BACK BUTTON DOES
+    @Override
+    public void onBackPressed() {
+        if(drawerVolume.isDrawerOpen(GravityCompat.START)){
+            drawerVolume.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
     }
 }

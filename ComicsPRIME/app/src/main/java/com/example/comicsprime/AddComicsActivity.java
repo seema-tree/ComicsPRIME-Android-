@@ -64,7 +64,7 @@ public class AddComicsActivity extends AppCompatActivity {
         
         //GET DATA AND PASS TO INTENT
         Bundle bundle = getIntent().getExtras();
-        final String username_2 = bundle.getString("username_1");
+        final String username_2 = bundle.getString("username");
 
         //FIREBASE
 
