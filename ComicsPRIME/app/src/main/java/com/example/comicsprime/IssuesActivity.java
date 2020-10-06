@@ -108,7 +108,7 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
             @Override
             public void onClick(View v) {
 
-                final String searchText = searchEditTextIssue.getText().toString().trim();
+                final String searchText = searchEditTextIssue.getText().toString().trim().toUpperCase();
                 listIssues.clear();
 
                 comicListViewIssue.setAdapter(mIssueRecyclerAdapter2);
@@ -120,9 +120,9 @@ public class IssuesActivity extends AppCompatActivity implements issueRecyclerAd
 
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
 
-                            String keys = dataSnapshot.getKey().toString();
+                            String keys = dataSnapshot.getKey().toString().toUpperCase();
                             if(keys.contains(searchText)){
-                                listIssues.add(keys);
+                                listIssues.add(dataSnapshot.getKey().toString());
                             }
                         }
                     }

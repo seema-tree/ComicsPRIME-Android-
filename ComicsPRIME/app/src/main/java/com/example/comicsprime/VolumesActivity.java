@@ -110,7 +110,7 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
             @Override
             public void onClick(View v) {
 
-                final String searchText = searchEditTextVolume.getText().toString().trim();
+                final String searchText = searchEditTextVolume.getText().toString().trim().toUpperCase();
                 listVolumes.clear();
 
                 comicListViewVolume.setAdapter(mVolumeRecyclerAdapter2);
@@ -122,7 +122,7 @@ public class VolumesActivity extends AppCompatActivity implements volumeRecycler
 
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()){
 
-                            String keys = dataSnapshot.getKey().toString();
+                            String keys = dataSnapshot.getKey().toString().toUpperCase();
                             if(keys.contains(searchText)){
                                 listVolumes.add(dataSnapshot.getKey().toString());
                             }
